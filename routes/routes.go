@@ -15,9 +15,9 @@ func SetupRoutes() *mux.Router {
 		w.Write([]byte("pong"))
 	}).Methods("GET")
 
-	router.HandleFunc("/register", controllers.RegisterUser).Methods("POST")
+	router.HandleFunc("/register", controllers.RegisterUser).Methods("POST", "OPTIONS")
 	router.HandleFunc("/stocks", controllers.GetStocks).Methods("GET")
-	router.HandleFunc("/order", controllers.PlaceOrder).Methods("POST")
+	router.HandleFunc("/order", controllers.PlaceOrder).Methods("POST", "OPTIONS")
 	router.HandleFunc("/portfolio", controllers.GetPortfolio).Methods("GET")
 	router.HandleFunc("/orders", controllers.GetOrders).Methods("GET")
 

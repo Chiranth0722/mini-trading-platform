@@ -9,6 +9,12 @@ import (
 )
 
 func RegisterUser(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodOptions {
+		// 👇 Handle preflight request from browser
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
 	var user models.User
 	json.NewDecoder(r.Body).Decode(&user)
 
@@ -16,7 +22,7 @@ func RegisterUser(w http.ResponseWriter, r *http.Request) {
 	err := database.DB.QueryRow(query, user.Username, user.Password).Scan(&user.ID)
 
 	if err != nil {
-		http.Error(w, "User already exists or DB error", http.StatusBadRequest)
+		http.Error(w, "Error inserting user: "+err.Error(), http.StatusBadRequest)
 		return
 	}
 
